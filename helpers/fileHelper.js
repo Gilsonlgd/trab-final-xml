@@ -1,5 +1,14 @@
 const fs = require("fs");
 
+const writeFile = async (file_path, content) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFileSync(file_path, content, (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
+};
+
 const readFile = async (file_path) => {
   return new Promise((resolve, reject) => {
     fs.readFile(file_path, "utf8", (err, data) => {
@@ -21,4 +30,5 @@ const readDirectoryFiles = async (directory_path) => {
 module.exports = {
   readFile,
   readDirectoryFiles,
+  writeFile,
 };

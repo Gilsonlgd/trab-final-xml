@@ -1,5 +1,20 @@
-const { readFile, readDirectoryFiles } = require("./helpers/fileHelper");
+const { generateIndexHtml } = require("./helpers/htmlHelper");
 const { validateXmlDtd, validateXmlXsd } = require("./helpers/xmlHelper");
+
+const {
+  writeFile,
+  readFile,
+  readDirectoryFiles,
+} = require("./helpers/fileHelper");
+
+const {
+  countAllProducts,
+  getTaxesSummary,
+  getProductWithLowestPrice,
+  getInvoiceWithHeighestTax,
+  getProductSummary,
+  getInvoiceSummary,
+} = require("./helpers/queriesHelper");
 
 function checkInvoicesValidation(validations) {
   const invalid_invoices = validations.filter(
@@ -76,7 +91,28 @@ async function script() {
   validations = await validateInvoicesAgainstXSD(invoices, "./notas.xsd");
   const xsdValidation = checkInvoicesValidation(validations);
 
-  
+  if (dtdValidation && xsdValidation) {
+    const products_count = await countAllProducts(invoices);
+    const taxes = await getTaxesSummary(invoices);
+
+    const lowest_price_product = await getProductWithLowestPrice(invoices);
+    const product_summary = getProductSummary(lowest_price_product);
+
+    const heighest_tax_invoice = await getInvoiceWithHeighestTax(invoices);
+    const invoice_summary = getInvoiceSummary(heighest_tax_invoice);
+
+    const html_content = generateIndexHtml(
+      products_count,
+      invoices.length,
+      taxes,
+      product_summary,
+      invoice_summary
+    );
+
+    if (html_content) {
+      await writeFile("./html/index.html", html_content);
+    }
+  }
 }
 
 script();
