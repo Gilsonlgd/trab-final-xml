@@ -63,15 +63,20 @@ const getInvoiceWithHeighestTax = async (invoices) => {
 
   const maxTax = taxes.reduce((acc, curr) => (acc > curr ? acc : curr), 0);
 
-  const invoice = invoices.find(async (invoice) => {
+  let maxTaxInvoice = null;
+  for (const invoice of invoices) {
     const tax = await xPathQuery(
       invoice.content,
       "number(//total/*/vICMS + //total/*/vIPI + //total/*/vPIS + //total/*/vCOFINS)"
     );
-    return tax === maxTax;
-  });
 
-  return toDom(invoice.content);
+    if (tax === maxTax) {
+      maxTaxInvoice = invoice;
+      break;
+    }
+  }
+
+  return toDom(maxTaxInvoice.content);
 };
 
 const getTaxesSummary = async (invoices) => {
@@ -163,11 +168,16 @@ const getInvoiceSummary = (invoice) => {
   const emit = nodeXPathQuery("string(//emit/xNome)", invoice);
   const dest = nodeXPathQuery("string(//dest/xNome)", invoice);
   const numProducts = nodeXPathQuery("count(//prod)", invoice);
+  const totalTax = nodeXPathQuery(
+    "number(//total/*/vICMS + //total/*/vIPI + //total/*/vPIS + //total/*/vCOFINS)",
+    invoice
+  );
 
   return {
     number,
     date,
     total,
+    totalTax,
     emit,
     dest,
     numProducts,

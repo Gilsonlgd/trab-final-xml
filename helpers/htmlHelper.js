@@ -137,14 +137,17 @@ const generateIndexHtml = (
             <div class="col-12 col-lg-6 mb-3">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">Produto de menor preço:</h5>
+                  <h5 class="card-title">Nota de maior imposto:</h5>
                   <p class="card-text">
                     <ul> 
                       <li>Emissor: ${highTaxInvoice.emit}</li>
-                      <li>Destinatário: ${highTaxInvoice.dest}</li>
                       <li>Número: ${highTaxInvoice.number}</li>
                       <li>Data: ${highTaxInvoice.date}</li>
-                      <li>Valor total: R$: ${highTaxInvoice.total
+                      <li>Valor total da nota: R$: ${highTaxInvoice.total
+                        .toFixed(2)
+                        .replace(".", ",")}
+                      </li>
+                      <li>Valor total de impostos: R$: ${highTaxInvoice.totalTax
                         .toFixed(2)
                         .replace(".", ",")}
                       </li>
