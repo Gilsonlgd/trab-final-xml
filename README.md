@@ -18,7 +18,7 @@ https://balta.io/blog/node-npm-instalacao-configuracao-e-primeiros-passos
 cd trab-final-xml
 ```
 
-3. Instale as dependências do projeto usando o npm (Node Package Manager).
+2. Instale as dependências do projeto usando o npm (Node Package Manager).
 
 ```bash
 npm install
