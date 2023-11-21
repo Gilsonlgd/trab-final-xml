@@ -1,3 +1,4 @@
+const libxslt = require("libxslt");
 const Libxml = require("node-libxml");
 let libxml = new Libxml();
 
@@ -49,10 +50,29 @@ const toDom = (xml) => {
   return new dom().parseFromString(xml);
 };
 
+const toHtml = async (xml_content, xsl_content) => {
+  return new Promise((resolve, reject) => {
+    libxslt.parse(xsl_content, (err, stylesheet) => {
+      if (err) {
+        reject(err);
+      } else {
+        stylesheet.apply(xml_content, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      }
+    });
+  });
+};
+
 module.exports = {
   validateXmlDtd,
   validateXmlXsd,
   xPathQuery,
   nodeXPathQuery,
   toDom,
+  toHtml,
 };

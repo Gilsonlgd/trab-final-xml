@@ -6,7 +6,6 @@ const generateIndexHtml = (
   highTaxInvoice
 ) => {
   const htmlContent = `
-  <!DOCTYPE html>
   <html>
     <head>
       <link
@@ -14,7 +13,7 @@ const generateIndexHtml = (
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
       />
       <link rel="stylesheet" type="text/css" href="./style.css" />
-      <title>Home</title>
+      <title>NFe Dashboard</title>
     </head>
 
     <body>
@@ -163,22 +162,22 @@ const generateIndexHtml = (
             <div class="d-flex col-12 flex-column">
               <ul id="xml_files">
                 <li class="list-item">
-                  <a href="./dashboard1.html">Nota 1</a>
+                  <a href="./nota1.html">Nota 1</a>
                 </li>
                 <li class="list-item">
-                  <a href="./dashboard2.html">Nota 2</a>
+                  <a href="./nota2.html">Nota 2</a>
                 </li>
                 <li class="list-item">
-                  <a href="./dashboard3.html">Nota 3</a>
+                  <a href="./nota3.html">Nota 3</a>
                 </li>
                 <li class="list-item">
-                  <a href="./dashboard4.html">Nota 4</a>
+                  <a href="./nota4.html">Nota 4</a>
                 </li>
                 <li class="list-item">
-                  <a href="./dashboard5.html">Nota 5</a>
+                  <a href="./nota5.html">Nota 5</a>
                 </li>
                 <li class="list-item">
-                  <a href="./dashboard6.html">Nota 6</a>
+                  <a href="./nota6.html">Nota 6</a>
                 </li>
               </ul>
             </div>

@@ -1,5 +1,9 @@
 const { generateIndexHtml } = require("./helpers/htmlHelper");
-const { validateXmlDtd, validateXmlXsd } = require("./helpers/xmlHelper");
+const {
+  validateXmlDtd,
+  validateXmlXsd,
+  toHtml,
+} = require("./helpers/xmlHelper");
 
 const {
   writeFile,
@@ -82,6 +86,22 @@ async function validateInvoicesAgainstXSD(invoices, xsd_path) {
   return validations;
 }
 
+async function transformInvoicesToHtml(invoices, xsl_content) {
+  await Promise.all(
+    invoices.map(async (invoice) => {
+      try {
+        const html = await toHtml(invoice.content, xsl_content);
+        await writeFile(
+          `./html/${invoice.name.replace(".xml", "")}.html`,
+          html
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    })
+  );
+}
+
 async function script() {
   const invoices = await readInvoices();
 
@@ -110,7 +130,15 @@ async function script() {
     );
 
     if (html_content) {
-      await writeFile("./html/index.html", html_content);
+      try {
+        const xsl_content = await readFile("./notas.xsl");
+        await transformInvoicesToHtml(invoices, xsl_content);
+
+        await writeFile("./html/index.html", html_content);
+        console.log("Done!")
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 }
